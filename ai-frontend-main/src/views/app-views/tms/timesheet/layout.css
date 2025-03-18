@@ -1,0 +1,17 @@
+.even-row {
+  background-color: #f9f9f9 !important; /* Light gray for even rows */
+}
+
+.odd-row {
+  background-color: #ffffff !important; /* White for odd rows */
+}
+
+.ant-table-thead > tr > th {
+  background-color: #dfdcdc !important; /* Light gray header */
+  font-weight: bold;
+  text-align: center;
+}
+
+.ant-table-tbody > tr:hover {
+  background-color: #d6e4ff !important; /* Light blue on hover */
+}

@@ -1,0 +1,133 @@
+.tree-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #f3f7fa;
+  position: relative;
+  cursor: grab; /* Indicate draggable area */
+  overflow: visible; /* Allow arrows to be fully rendered */
+  user-select: none; /* Prevent unwanted text selection when dragging */
+}
+
+.tree-container:active {
+  cursor: grabbing;
+}
+
+.tree {
+  display: flex;
+  flex-direction: row; /* Ensure nodes are arranged properly */
+  align-items: flex-start;
+  transform-origin: center;
+  transition: transform 0.1s ease-out;
+  flex-wrap: wrap;
+  gap: 30px;
+  min-height: 500px;
+  position: relative; /* Ensure it aligns correctly inside .tree-container */
+  overflow: visible; /* Ensure arrows are not clipped */
+}
+
+.tree-node {
+  position: relative;
+  text-align: center;
+  display: flex;
+  margin: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  z-index: 2; /* Ensure it renders above arrows */
+}
+
+.tree-children {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 50px;
+  gap: 40px;
+  position: relative; /* Prevents alignment issues */
+  overflow: visible; /* Prevents arrows from being cut */
+}
+
+.department-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 0px;
+  width: 220px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.control-buttons {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.zoom-btn, .reset-btn {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background: #007BFF;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.zoom-btn:hover, .reset-btn:hover {
+  background-color: #0056B3;
+}
+
+.parent-node {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  padding: 30px;
+  gap: 7px;
+}
+
+.ellipsis-icon {
+  font-size: 20px;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Styles for Renga Node */
+.tree-node.renga-node {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+}
+
+.tree-node.renga-node .department-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.tree-node.renga-node .department-employees {
+  font-size: 16px;
+}
+
+/* Fix panning issues */
+.pannable {
+  cursor: grab;
+  transition: transform 0.1s ease-out;
+}
+
+.pannable:active {
+  cursor: grabbing;
+}
