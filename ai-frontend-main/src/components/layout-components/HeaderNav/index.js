@@ -103,7 +103,7 @@ export const HeaderNav = (props) => {
                                 color: transparent; /* Make text color transparent so gradient is visible */
                             `}
                         >
-                            AGE OF AI
+                            JW COLLECTIONS
                         </div>
                     </NavEdge>
                     <NavEdge right>

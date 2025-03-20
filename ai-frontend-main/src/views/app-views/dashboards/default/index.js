@@ -1,128 +1,243 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Layout, Input, Typography, Space, Card, Button } from "antd";
-import { SendOutlined, DeleteOutlined } from "@ant-design/icons";
+import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "store/slices/cartSlice";
+import { 
+  Card, Rate, Tag, Space, Button, Tabs, Modal, Carousel, Drawer, InputNumber 
+} from "antd";
+import { 
+  HeartOutlined, ShoppingCartOutlined, LeftOutlined, RightOutlined 
+} from "@ant-design/icons";
 
-const { Content } = Layout;
-const { Text } = Typography;
+const { TabPane } = Tabs;
 
-const AIChatPlatform = () => {
-  const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const chatContainerRef = useRef(null);
-
-  const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
-    
-    const newUserMessage = { text: inputValue, sender: "user" };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-    setInputValue("");
-    setLoading(true); // Show loading wheel
-
-    try {
-      const response = await generateResponse(inputValue);
-      const newSystemMessage = { text: response, sender: "system" };
-      setMessages((prevMessages) => [...prevMessages, newSystemMessage]);
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-      setMessages((prevMessages) => [...prevMessages, { text: "Error connecting to AI model.", sender: "system" }]);
-    } finally {
-      setLoading(false); // Hide loading wheel
+const products = {
+  Electronics: [
+    {
+      id: 1,
+      name: "Smartwatch",
+      image: "/img/ecom/smartwatch.jpeg",
+      moreImages: [
+        "/img/ecom/smartwatch1.jpeg",
+        "/img/ecom/smartwatch2.jpeg",
+      ],
+      price: 249, 
+      location: "New York, USA",
+      rating: 4.8,
+      description: "A sleek smartwatch with fitness tracking, notifications, and long battery life.",
+      material: "Brass",
+      countryOfOrigin: "Philippines",
+    },
+    {
+      id: 1,
+      name: "Smartwatch",
+      image: "/img/ecom/smartwatch1.jpeg",
+      moreImages: [
+        "/img/ecom/smartwatch1.jpeg",
+        "/img/ecom/smartwatch2.jpeg",
+      ],
+      price: 249, 
+      location: "New York, USA",
+      rating: 4.8,
+      description: "A sleek smartwatch with fitness tracking, notifications, and long battery life.",
+      material: "Brass",
+      countryOfOrigin: "Philippines",
+    },
+    {
+      id: 1,
+      name: "Smartwatch",
+      image: "/img/ecom/smartwatch.jpeg",
+      moreImages: [
+        "/img/ecom/smartwatch1.jpeg",
+        "/img/ecom/smartwatch2.jpeg",
+      ],
+      price: 249, 
+      location: "New York, USA",
+      rating: 4.8,
+      description: "A sleek smartwatch with fitness tracking, notifications, and long battery life.",
+      material: "Brass",
+      countryOfOrigin: "Philippines",
+    },
+    {
+      id: 1,
+      name: "Smartwatch",
+      image: "/img/ecom/smartwatch.jpeg",
+      moreImages: [
+        "/img/ecom/smartwatch1.jpeg",
+        "/img/ecom/smartwatch2.jpeg",
+      ],
+      price: 249, 
+      location: "New York, USA",
+      rating: 4.8,
+      description: "A sleek smartwatch with fitness tracking, notifications, and long battery life.",
+      material: "Brass",
+      countryOfOrigin: "Philippines",
+    },
+    {
+      id: 1,
+      name: "Smartwatch",
+      image: "/img/ecom/smartwatch.jpeg",
+      moreImages: [
+        "/img/ecom/smartwatch1.jpeg",
+        "/img/ecom/smartwatch2.jpeg",
+      ],
+      price: 249, 
+      location: "New York, USA",
+      rating: 4.8,
+      description: "A sleek smartwatch with fitness tracking, notifications, and long battery life.",
+      material: "Brass",
+      countryOfOrigin: "Philippines",
+    },
+    {
+      id: 2,
+      name: "Smartphone",
+      image: "/img/ecom/smartphone.jpg",
+      moreImages: [
+        "/img/ecom/smartphone1.jpg",
+        "/img/ecom/smartphone2.jpg",
+      ],
+      price: 699,
+      location: "Los Angeles, USA",
+      rating: 4.7,
+      description: "A powerful smartphone with an amazing camera and a smooth user experience.",
+      material: "Aluminum & Glass",
+      countryOfOrigin: "China",
     }
-  };
+  ],
+  
+};
 
-  const generateResponse = async (input) => {
-    try {
-      const response = await fetch("http://localhost:5000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
-      });
-      const data = await response.json();
-      return data.response || "No response received from AI.";
-    } catch (error) {
-      throw new Error("Failed to connect to AI server");
-    }
-  };
-
-  const handleClearChat = () => {
-    setMessages([]);
-  };
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
+const ProductCard = ({ product, onShowDetails, onAddToCart }) => {
   return (
-    <Layout style={{ minHeight: "100vh", padding: "20px" }}>
-      <Content style={{ display: "flex", flexDirection: "column" }}>
-        {/* Chat Input */}
-        <Card style={{ marginBottom: "20px", padding: "10px", background: "#f5f5f5" }}>
-          <Input
-            placeholder="Type your message..."
-            size="large"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onPressEnter={handleSendMessage}
-            suffix={<SendOutlined onClick={handleSendMessage} style={{ fontSize: "20px", cursor: "pointer" }} />}
-          />
-        </Card>
-
-        {/* Chat Container */}
-        <Card style={{ flexGrow: 1, overflowY: "auto", padding: "10px" }} ref={chatContainerRef}>
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              style={{
-                alignSelf: message.sender === "user" ? "flex-end" : "flex-start",
-                backgroundColor: message.sender === "user" ? "#e6f7ff" : "#f0f0f0",
-                padding: "10px",
-                borderRadius: "8px",
-                marginBottom: "8px",
-                maxWidth: "70%",
-              }}
-            >
-              <Text>{message.text}</Text>
-            </div>
-          ))}
-
-          {/* Custom Spinning Wheel */}
-          {loading && (
-            <div className="loading-wheel"></div>
-          )}
-        </Card>
-
-        {/* Clear Chat Button */}
-        <Space style={{ marginTop: "10px" }}>
-          <Button type="primary" danger onClick={handleClearChat} icon={<DeleteOutlined />}>
-            Clear Chat
-          </Button>
-        </Space>
-      </Content>
-
-      {/* Custom Spinning Wheel CSS */}
-      <style>
-        {`
-          .loading-wheel {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #1890ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-          }
-
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}
-      </style>
-    </Layout>
+    <Card
+      hoverable
+      cover={
+        <img
+          alt={product.name}
+          src={product.image}
+          style={{ height: "180px", objectFit: "cover", cursor: "pointer" }}
+          onClick={() => onShowDetails(product)}
+        />
+      }
+      style={{ width: 230 }}
+      bodyStyle={{ padding: "12px" }}
+    >
+      <div style={{ position: "absolute", top: "8px", left: "8px" }}>
+        <Tag color="blue">Best Seller</Tag>
+      </div>
+      <div style={{ position: "absolute", top: "8px", right: "8px" }}>
+        <HeartOutlined style={{ fontSize: "16px", color: "#888", cursor: "pointer" }} />
+      </div>
+      <Space direction="vertical" size="small">
+        <h3 style={{ fontSize: "14px", fontWeight: "600" }}>{product.name}</h3>
+        <span style={{ fontSize: "12px", color: "gray" }}>{product.location}</span>
+        <Rate disabled defaultValue={product.rating} count={5} style={{ fontSize: "12px" }} />
+        <span style={{ fontSize: "14px", fontWeight: "bold" }}>${product.price}</span>
+        <Button type="primary" size="small" icon={<ShoppingCartOutlined />} onClick={() => onAddToCart(product)}>
+          Add to Cart
+        </Button>
+      </Space>
+    </Card>
   );
 };
 
-export default AIChatPlatform;
+const EcommerceTabs = () => {
+  const [activeTab, setActiveTab] = useState("Electronics");
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const carouselRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const handleShowDetails = (product) => {
+    setSelectedProduct(product);
+    setModalVisible(true);
+  };
+
+  const handleAddToCart = (product) => {
+    setSelectedProduct(product);
+    setDrawerVisible(true);
+    setQuantity(1); // Reset quantity when opening drawer
+  };
+
+  const handleConfirmAdd = () => {
+    if (selectedProduct) {
+      dispatch(addItem({ ...selectedProduct, quantity }));
+      setDrawerVisible(false); // Close the cart drawer after adding
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <Tabs defaultActiveKey="Electronics" onChange={setActiveTab}>
+        {Object.keys(products).map((category) => (
+          <TabPane tab={category} key={category}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "16px" }}>
+              {products[category].map((product) => (
+                <ProductCard key={product.id} product={product} onShowDetails={handleShowDetails} onAddToCart={handleAddToCart} />
+              ))}
+            </div>
+          </TabPane>
+        ))}
+      </Tabs>
+
+      {/* Product Details Modal */}
+      <Modal
+        title={selectedProduct?.name}
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+        centered
+      >
+        {selectedProduct && (
+          <div style={{ textAlign: "center", position: "relative" }}>
+            <div style={{ position: "relative" }}>
+              <Button shape="circle" icon={<LeftOutlined />} onClick={() => carouselRef.current?.prev()} style={{ position: "absolute", top: "50%", left: "-10px", transform: "translateY(-50%)", zIndex: 10 }} />
+              <Carousel autoplay ref={carouselRef} arrows={false}>
+                {[selectedProduct.image, ...(selectedProduct.moreImages || [])].map((img, index) => (
+                  <div key={index}>
+                    <img src={img} alt={`${selectedProduct.name} ${index + 1}`} style={{ width: "100%", maxHeight: "300px", objectFit: "contain" }} />
+                  </div>
+                ))}
+              </Carousel>
+              <Button shape="circle" icon={<RightOutlined />} onClick={() => carouselRef.current?.next()} style={{ position: "absolute", top: "50%", right: "-10px", transform: "translateY(-50%)", zIndex: 10 }} />
+            </div>
+            <p style={{ margin: "15px 0", fontSize: "14px", color: "#666" }}>{selectedProduct.description}</p>
+            <p><strong>Price:</strong> ${selectedProduct.price}</p>
+            <Button type="primary" icon={<ShoppingCartOutlined />} size="large" onClick={() => handleAddToCart(selectedProduct)}>Add to Cart</Button>
+          </div>
+        )}
+      </Modal>
+
+      {/* Product Details Drawer */}
+      <Drawer
+        title="Add to Cart"
+        placement="right"
+        closable={true}
+        onClose={() => setDrawerVisible(false)}
+        open={drawerVisible}
+        width={350}
+        zIndex={1100}
+      >
+        {selectedProduct && (
+          <div>
+            <img src={selectedProduct.image} alt={selectedProduct.name} style={{ width: "100%", height: "180px", objectFit: "cover", marginBottom: "10px" }} />
+            <h3>{selectedProduct.name}</h3>
+            <p>{selectedProduct.description}</p>
+            <p><strong>Price per item:</strong> ${selectedProduct.price}</p>
+            <div style={{ marginBottom: "20px" }}>
+              <span style={{ marginRight: "10px" }}>Quantity:</span>
+              <InputNumber min={1} max={10} value={quantity} onChange={(value) => setQuantity(value)} />
+            </div>
+            <p><strong>Total Price:</strong> ${selectedProduct.price * quantity}</p>
+            <Button type="primary" block icon={<ShoppingCartOutlined />} onClick={handleConfirmAdd}>
+              Confirm & Add to Cart
+            </Button>
+          </div>
+        )}
+      </Drawer>
+    </div>
+  );
+};
+
+export default EcommerceTabs;
