@@ -65,6 +65,7 @@ export const protectedRoutes = [
             import("views/app-views/tms/task")
         ),
     },
+    
     {
         key: "app.task.list",
         path: `${APP_PREFIX_PATH}/task/list/*`,
@@ -98,4 +99,11 @@ export const protectedRoutes = [
             import("views/app-views/tms/task")
         ),
     },
+    {
+        key: "ai search",
+        path: `${APP_PREFIX_PATH}/ai-search/*`,
+        component: React.lazy(() =>
+            import("views/app-views/ecommerce/aichatplatform")
+        ),
+    }
 ];

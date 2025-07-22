@@ -101,7 +101,37 @@ const products = {
       description: "A powerful smartphone with an amazing camera and a smooth user experience.",
       material: "Aluminum & Glass",
       countryOfOrigin: "China",
-    }
+    },
+    {
+      id: 2,
+      name: "Smartphone",
+      image: "/img/ecom/smartphone.jpg",
+      moreImages: [
+        "/img/ecom/smartphone1.jpg",
+        "/img/ecom/smartphone2.jpg",
+      ],
+      price: 699,
+      location: "Los Angeles, USA",
+      rating: 4.7,
+      description: "A powerful smartphone with an amazing camera and a smooth user experience.",
+      material: "Aluminum & Glass",
+      countryOfOrigin: "China",
+    },
+    {
+      id: 2,
+      name: "Smartphone",
+      image: "/img/ecom/smartphone.jpg",
+      moreImages: [
+        "/img/ecom/smartphone1.jpg",
+        "/img/ecom/smartphone2.jpg",
+      ],
+      price: 699,
+      location: "Los Angeles, USA",
+      rating: 4.7,
+      description: "A powerful smartphone with an amazing camera and a smooth user experience.",
+      material: "Aluminum & Glass",
+      countryOfOrigin: "China",
+    } 
   ],
   
 };

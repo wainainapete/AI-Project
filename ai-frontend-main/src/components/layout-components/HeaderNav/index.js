@@ -103,7 +103,7 @@ export const HeaderNav = (props) => {
                                 color: transparent; /* Make text color transparent so gradient is visible */
                             `}
                         >
-                            JW COLLECTIONS
+                            PETE INNOVATIONS
                         </div>
                     </NavEdge>
                     <NavEdge right>

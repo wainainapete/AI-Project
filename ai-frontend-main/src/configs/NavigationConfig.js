@@ -1,4 +1,4 @@
-import { HomeOutlined, FireOutlined } from '@ant-design/icons';
+import { HomeOutlined, FireOutlined,RobotOutlined } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig';
 
 const navigationConfig = [
@@ -15,6 +15,14 @@ const navigationConfig = [
     path: `${APP_PREFIX_PATH}/trending`,
     title: "Trending",
     icon: FireOutlined,  
+    breadcrumb: false,
+    submenu: [],
+  },
+   {
+    key: "AI Search",
+    path: `${APP_PREFIX_PATH}/ai-search`,
+    title: "AI SEARCH",
+    icon: RobotOutlined,  
     breadcrumb: false,
     submenu: [],
   },
